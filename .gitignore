@@ -1,0 +1,29 @@
+# Virtual Environment
+venv/
+
+# Python
+__pycache__/
+*.pyc
+
+# DBT
+dbt/target/
+dbt/logs/
+dbt/dbt_packages/
+
+# DuckDB
+*.duckdb
+*.wal
+
+# Data
+data/*.parquet
+data/*.csv
+
+# Airflow
+airflow.db
+logs/
+
+# Environment
+.env
+
+# VS Code
+.vscode/
