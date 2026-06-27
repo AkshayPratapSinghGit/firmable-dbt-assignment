@@ -6,7 +6,7 @@ PROJECT_ROOT = Path(__file__).parent
 
 DB_PATH = PROJECT_ROOT / "dbt" / "nyc_taxi" / "nyc_taxi.duckdb"
 
-PARQUET_FILE = PROJECT_ROOT / "data" / "yellow_tripdata_2023-01.parquet"
+PARQUET_PATTERN = PROJECT_ROOT / "data" / "yellow_tripdata_2023-*.parquet"
 
 ZONE_FILE = PROJECT_ROOT / "data" / "taxi_zone_lookup.csv"
 
@@ -19,7 +19,7 @@ print("Loading Yellow Taxi Trips...")
 con.execute(f"""
 CREATE OR REPLACE TABLE raw.yellow_tripdata AS
 SELECT *
-FROM read_parquet('{PARQUET_FILE}');
+FROM read_parquet('{PARQUET_PATTERN}');
 """)
 
 print("Loading Taxi Zones...")

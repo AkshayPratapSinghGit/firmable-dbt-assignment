@@ -1,0 +1,47 @@
+version: 2
+
+models:
+
+  - name: stg_yellow_trips
+    columns:
+
+      - name: pickup_datetime
+        tests:
+          - not_null
+
+      - name: dropoff_datetime
+        tests:
+          - not_null
+
+  - name: stg_taxi_zones
+    columns:
+
+      - name: location_id
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_zones
+    columns:
+
+      - name: location_id
+        tests:
+          - unique
+          - not_null
+
+  - name: fct_trips
+    columns:
+
+      - name: pickup_datetime
+        tests:
+          - not_null
+
+      - name: dropoff_datetime
+        tests:
+          - not_null
+
+      - name: trip_duration_minutes
+        tests:
+          - trip_duration:
+              min_value: 1
+              max_value: 180
