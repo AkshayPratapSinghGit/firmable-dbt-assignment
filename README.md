@@ -1,6 +1,9 @@
 # 🚖 NYC Taxi Analytics Pipeline
 
-<img src="screenshots/nyc_tlc_logo.jpeg" alt="NYC TLC LOGO" width="200">
+<p align="center">
+  <img src="screenshots/firmable.png" alt="Firmable Logo" width="600" />
+  <img src="screenshots/nyc_tlc_logo.jpeg" alt="NYC TLC Logo" width="200" />
+</p>
 
 > End-to-End ELT Data Engineering Pipeline using Python, DuckDB, dbt, Apache Airflow & Docker
 
@@ -40,7 +43,7 @@
 - [Verification](#-verification)
 - [Performance](#-performance)
 - [Design Decisions](#-design-decisions)
-- [Bonus Enhancement](#-bonus-enhancement)
+- [Bonus Enhancement (Web Scraper)](#-bonus-enhancement-web-scraper)
 - [Future Improvements](#-future-improvements)
 - [Acknowledgements](#-acknowledgements)
 - [Author](#-author)
@@ -210,7 +213,7 @@ Mart Layer
 
 # 🔄 Airflow Workflow
 
-![Airflow Graph](screenshots/airflow_graph.png)
+![Airflow Graph](screenshots/airflow_dag.png)
 
 The Airflow DAG executes the following tasks sequentially.
 
@@ -641,6 +644,8 @@ Services include:
 - PostgreSQL Metadata Database
 ---
 
+<img src="screenshots/docker_services.png" alt="Docker Services" width="500">
+
 # ✔ Validation Performed
 
 The pipeline has been validated using the following checks:
@@ -919,7 +924,7 @@ This enhancement is intentionally kept separate from the core architecture to pr
 
 ---
 
-# 🔮 Future Improvements which can be Done
+# 🔮 Future Improvements
 
 Potential production enhancements include:
 
