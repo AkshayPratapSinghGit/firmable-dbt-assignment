@@ -105,7 +105,7 @@ The project addresses the following objectives:
 
 # 🏗 High Level Architecture
 
-> Insert **docs/HLD.png**
+> Insert **screenshots/HLD.png**
 
 The pipeline follows the architecture shown below.
 
@@ -538,7 +538,7 @@ Example validation after pipeline execution:
 Include the following screenshots inside the repository.
 
 ```
-docs/
+screenshots/
 ```
 
 Recommended screenshots:
