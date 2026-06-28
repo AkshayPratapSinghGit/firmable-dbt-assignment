@@ -28,10 +28,11 @@
 # 📑 Table of Contents
 
 - [Project Overview](#-project-overview)
-- [Assignment Objectives](#-assignment-objectives)
-- [Features](#-features)
 - [Technology Stack](#-technology-stack)
 - [High Level Architecture](#-high-level-architecture)
+- [Brainstormer Response](#-brainstormer-response)
+- [Design Decisions and Trade-offs](#-designd-decisions-and-trade-offs)
+- [AI Usage](#-AI-usage)
 - [Project Structure](#-project-structure)
 - [Data Pipeline](#-data-pipeline)
 - [Data Warehouse](#-data-warehouse)
@@ -71,22 +72,6 @@ This project implements a complete **Enterprise ELT (Extract → Load → Transf
 The solution demonstrates modern Data Engineering practices by ingesting raw data into DuckDB, transforming it using dbt, orchestrating the workflow using Apache Airflow, validating data quality through dbt tests, and answering analytical business questions using SQL.
 
 The architecture follows a layered Medallion-style design inspired by production-grade data platforms used at organizations such as Microsoft, Google, Uber, Airbnb and Netflix.
-
----
-
-# 🎯 Assignment Objectives
-
-The project addresses the following objectives:
-
-- Build an end-to-end ELT pipeline.
-- Load raw NYC Taxi datasets into an analytical database.
-- Transform raw data using dbt.
-- Create reusable staging, intermediate and mart models.
-- Perform data quality validation.
-- Orchestrate the complete workflow using Apache Airflow.
-- Containerize the solution using Docker.
-- Solve analytical SQL business problems.
-- Produce production-ready documentation.
 
 ---
 
@@ -140,6 +125,67 @@ Business Analytics
 ```
 
 ---
+
+# 🧠 Brainstormer Response
+
+## Preventing Invalid Data from Reaching Downstream Consumers
+
+### Question
+
+> If `run_dbt_tests` fails halfway through, do you want the mart models to be visible to downstream consumers? How would you implement a "blue/green" or transactional approach to prevent bad data from reaching the marts?
+
+### Answer
+
+No. In a production environment, downstream users should never consume partially validated or potentially incorrect data. If the dbt tests fail after building the mart models, exposing those models could lead to incorrect dashboards, reports, or business decisions.
+
+A common production approach is to implement a **Blue/Green deployment strategy** for analytical models.
+
+The workflow would be:
+
+1. Build all dbt models in a **staging schema** (Green), while consumers continue querying the current production schema (Blue).
+2. Execute all dbt data quality tests against the Green schema.
+3. If every test passes, atomically switch consumers to the Green schema by swapping schemas, updating views, or changing aliases.
+4. If any test fails, discard the Green schema and continue serving data from the existing Blue schema.
+5. Generate alerts so engineers can investigate the failed pipeline.
+
+This approach ensures that downstream consumers always access a fully validated and internally consistent dataset while preventing partially built marts from becoming visible.
+
+Although this project uses DuckDB for local execution, the same design could be implemented in production data warehouses such as Snowflake, BigQuery, or Redshift using schema promotion or atomic view replacement.
+
+---
+
+# 🛠️ Design Decisions and Trade-offs
+
+The following design decisions were made to balance simplicity, reproducibility, and the scope of the assessment.
+
+* DuckDB was chosen instead of Snowflake because it provides excellent analytical performance without requiring cloud infrastructure or account setup, while still supporting SQL features required for the assignment.
+* The pipeline uses full-refresh dbt models instead of incremental models because the dataset represents a fixed historical year (2023), making full rebuilds simple and deterministic.
+* Apache Airflow is scheduled to run **daily at 02:00 UTC** to demonstrate orchestration capabilities, although the underlying historical dataset does not change.
+* Data quality validation is performed after all transformation steps. A production implementation would use a Blue/Green deployment strategy so that only validated data becomes visible to downstream consumers.
+* The optional Spark solution demonstrates how the same transformation logic could scale to historical datasets spanning billions of records.
+
+---
+
+# ✨💻 AI Usage
+
+AI-assisted development tools were intentionally used throughout this assessment to improve development speed and documentation quality, consistent with the assessment instructions.
+
+### AI Tools Used
+
+* ChatGPT (OpenAI)
+
+### How AI Was Used
+
+AI was used to:
+
+* Brainstorm pipeline architecture and project organization.
+* Review Python, SQL, dbt, Docker, and Airflow implementations.
+* Assist with debugging Docker, Airflow, dbt, and DuckDB issues encountered during development.
+* Improve SQL query readability and documentation.
+* Draft and refine the project README and High-Level Design (HLD) diagrams.
+* Suggest best practices for data modeling, orchestration, testing, and project structure.
+
+All generated code and documentation were manually reviewed, modified where necessary, executed locally, and validated through successful dbt runs, Airflow pipeline execution, SQL query testing, and end-to-end verification before inclusion in the final submission.
 
 # 📂 Project Structure
 
