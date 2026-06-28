@@ -51,6 +51,8 @@
 
 This project implements a complete **Enterprise ELT (Extract → Load → Transform)** Data Engineering pipeline using the **NYC Yellow Taxi Trip Dataset (2023)**.
 
+
+
 The solution demonstrates modern Data Engineering practices by ingesting raw data into DuckDB, transforming it using dbt, orchestrating the workflow using Apache Airflow, validating data quality through dbt tests, and answering analytical business questions using SQL.
 
 The architecture follows a layered Medallion-style design inspired by production-grade data platforms used at organizations such as Microsoft, Google, Uber, Airbnb and Netflix.
@@ -73,21 +75,6 @@ The project addresses the following objectives:
 
 ---
 
-# ✨ Features
-
-- Automated raw data loading
-- DuckDB analytical warehouse
-- Modular dbt transformations
-- Layered data modeling
-- Data quality testing
-- Airflow orchestration
-- Dockerized deployment
-- SQL analytical solutions
-- Business-ready reporting tables
-- Reproducible development environment
-
----
-
 # 🛠 Technology Stack
 
 | Layer | Technology |
@@ -105,7 +92,7 @@ The project addresses the following objectives:
 
 # 🏗 High Level Architecture
 
-> Insert **screenshots/HLD.png**
+![High Level Architecture](screenshots/HLD.png)
 
 The pipeline follows the architecture shown below.
 
@@ -221,6 +208,8 @@ Mart Layer
 
 # 🔄 Airflow Workflow
 
+![Airflow Graph](screenshots/airflow_graph.png)
+
 The Airflow DAG executes the following tasks sequentially.
 
 ```
@@ -248,6 +237,8 @@ Pipeline Success
 ---
 
 # 📊 dbt Models
+
+![DBT Lineage](screenshots/dbt_lineage.png)
 
 ### Staging
 
@@ -494,15 +485,6 @@ Services include:
 - Airflow Triggerer
 - Airflow Worker
 - PostgreSQL Metadata Database
-- Redis Message Broker
-
-Benefits
-
-- Reproducible environment
-- One-command deployment
-- Platform independence
-- Easy onboarding
-
 ---
 
 # ✔ Validation Performed
@@ -533,26 +515,9 @@ Example validation after pipeline execution:
 
 ---
 
-# 📊 Pipeline Screenshots
+# 📊 Pipeline Run Screenshots (Grid)
 
-Include the following screenshots inside the repository.
-
-```
-screenshots/
-```
-
-Recommended screenshots:
-
-- High Level Architecture
-- Airflow DAG
-- Airflow Graph View
-- Successful Pipeline Execution
-- dbt Lineage Graph
-- dbt Documentation
-- SQL Query Results
-- DuckDB Query Output
-- Docker Containers Running
-
+![Airflow Grid](screenshots/airflow_grid.png)
 
 ---
 
@@ -578,7 +543,7 @@ Ensure the following software is installed before running the project.
 ```bash
 git clone <repository-url>
 
-cd dbt-assignment-chatgpt
+cd dbt-assignment
 ```
 
 ---
@@ -784,9 +749,9 @@ Ensures:
 
 ---
 
-# ⭐ Bonus Enhancement
+# ⭐ Bonus Enhancement (Web Scraper)
 
-Although the primary implementation assumes datasets are available locally, the project also includes an optional enhancement for automated data acquisition.
+Although the primary implementation assumes datasets are available locally, the project also includes an optional enhancement for automated data acquisition,using web scraping.
 
 The optional utility:
 
@@ -800,7 +765,7 @@ This enhancement is intentionally kept separate from the core architecture to pr
 
 ---
 
-# 🔮 Future Improvements
+# 🔮 Future Improvements which can be Done
 
 Potential production enhancements include:
 
