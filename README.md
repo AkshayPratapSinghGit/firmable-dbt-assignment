@@ -917,7 +917,7 @@ The optional utility:
 ```
 download_raw_data.py
 ```
-
+<img src="screenshots/web_scraper.png" alt="Web Scraper" width="800">
 can be used to automatically download the required NYC Taxi datasets from the official NYC TLC website before pipeline execution.
 
 This enhancement is intentionally kept separate from the core architecture to preserve a clean and modular ELT workflow while demonstrating an additional automation capability.
