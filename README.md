@@ -1,5 +1,7 @@
 # 🚖 NYC Taxi Analytics Pipeline
 
+<img src="screenshots/nyc_tlc_logo.jpeg" alt="NYC TLC LOGO" width="200">
+
 > End-to-End ELT Data Engineering Pipeline using Python, DuckDB, dbt, Apache Airflow & Docker
 
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
@@ -92,7 +94,7 @@ The project addresses the following objectives:
 
 # 🏗 High Level Architecture
 
-![High Level Architecture](screenshots/HLD.png)
+<img src="screenshots/HLD.png" alt="High Level Architecture" width="800">
 
 The pipeline follows the architecture shown below.
 
