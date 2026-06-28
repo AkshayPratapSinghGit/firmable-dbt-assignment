@@ -163,7 +163,7 @@ Business Analytics
 ├── requirements.txt
 └── README.md
 ```
-
+<img src="screenshots/folder_structure.png" alt="Folder Structure" width="500">
 ---
 
 # ⚙ Data Pipeline
@@ -306,7 +306,7 @@ Example:
 ```bash
 dbt test
 ```
-
+<img src="screenshots/dbt_test.png" alt="DBT Test" width="500">
 All tests must pass before the pipeline is considered successful.
 
 ---
@@ -345,11 +345,63 @@ Output
 - Total Revenue
 - Number of Trips
 
-File
+Code
 
 ```
-queries/q1_top_zones_by_revenue.sql
+/*
+Business Decision:
+Revenue is ranked within each month instead of across the entire year.
+This allows fair month-over-month comparison because taxi demand is seasonal.
+*/
+
+WITH monthly_revenue AS (
+
+    SELECT
+
+        DATE_TRUNC('month', pickup_datetime) AS trip_month,
+
+        pickup_location_id,
+
+        pickup_zone,
+
+        SUM(total_amount) AS total_revenue
+
+    FROM main.fct_trips
+
+    GROUP BY
+        1,2,3
+
+)
+
+SELECT *
+
+FROM (
+
+    SELECT
+
+        *,
+
+        RANK() OVER (
+
+            PARTITION BY trip_month
+
+            ORDER BY total_revenue DESC
+
+        ) AS revenue_rank
+
+    FROM monthly_revenue
+
+)
+
+WHERE revenue_rank <= 10
+
+ORDER BY
+    trip_month,
+    revenue_rank;
 ```
+Output
+
+<img src="screenshots/first_sql_query.png" alt="First SQL Query" width="1000">
 
 ---
 
@@ -375,12 +427,49 @@ Output
 - Number of Trips
 - Revenue
 
-File
+Code
 
 ```
-queries/q2_hour_of_day_pattern.sql
-```
+WITH hourly_metrics AS (
 
+    SELECT
+
+        EXTRACT(hour FROM pickup_datetime) AS hour_of_day,
+
+        COUNT(*) AS total_trips,
+
+        AVG(fare_amount) AS avg_fare,
+
+        AVG(
+            tip_amount * 100.0 /
+            NULLIF(fare_amount,0)
+        ) AS avg_tip_percentage
+
+    FROM main.fct_trips
+
+    GROUP BY 1
+
+)
+
+SELECT
+
+    *,
+
+    AVG(total_trips) OVER (
+
+        ORDER BY hour_of_day
+
+        ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
+
+    ) AS rolling_3_hour_avg
+
+FROM hourly_metrics
+
+ORDER BY hour_of_day;
+```
+Output
+
+<img src="screenshots/second_sql_query.png" alt="Second SQL Query" width="1000">
 ---
 
 ## Question 3
@@ -405,12 +494,75 @@ Output
 - Current Trip
 - Time Gap
 
-File
+Code
 
 ```
-queries/q3_consecutive_gap_analysis.sql
-```
+/*
+Snowflake optimisation ideas
 
+- Cluster by pickup_location_id and pickup_datetime
+- Materialize ordered trips
+- Use result cache
+- Use search optimisation
+*/
+
+WITH ordered_trips AS (
+
+    SELECT
+
+        pickup_location_id,
+
+        CAST(pickup_datetime AS DATE) AS trip_date,
+
+        pickup_datetime,
+
+        dropoff_datetime,
+
+        LAG(dropoff_datetime) OVER (
+
+            PARTITION BY
+                pickup_location_id,
+                CAST(pickup_datetime AS DATE)
+
+            ORDER BY pickup_datetime
+
+        ) AS previous_dropoff
+
+    FROM main.fct_trips
+
+)
+
+SELECT
+
+    trip_date,
+
+    pickup_location_id,
+
+    MAX(
+
+        DATEDIFF(
+            'minute',
+            previous_dropoff,
+            pickup_datetime
+        )
+
+    ) AS max_gap_minutes
+
+FROM ordered_trips
+
+WHERE previous_dropoff IS NOT NULL
+
+GROUP BY
+    trip_date,
+    pickup_location_id
+
+ORDER BY
+    trip_date,
+    pickup_location_id;
+```
+Output
+
+<img src="screenshots/third_sql_query.png" alt="Third SQL Query" width="1000">
 ---
 
 # 📊 Business Insights
