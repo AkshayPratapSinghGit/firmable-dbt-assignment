@@ -248,7 +248,12 @@ Run dbt Tests
       ▼
 Pipeline Success
 ```
+**Schedule**
 
+- Schedule: Runs daily at **02:00 UTC**
+- Cron Expression: `0 2 * * *`
+- Catchup: Disabled (`catchup=False`) to prevent historical backfills
+- Manual Trigger: Supported via the Airflow UI or CLI
 ---
 
 # 📊 dbt Models
