@@ -43,5 +43,6 @@ models:
       - name: trip_duration_minutes
         tests:
           - trip_duration:
-              min_value: 1
-              max_value: 180
+              arguments:
+                min_value: 1
+                max_value: 180

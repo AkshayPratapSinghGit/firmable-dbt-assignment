@@ -27,3 +27,19 @@ logs/
 
 # VS Code
 .vscode/
+
+# macOS / Linux
+.DS_Store
+
+# pytest
+.pytest_cache/
+
+# Coverage
+.coverage
+htmlcov/
+
+# OS
+Thumbs.db
+
+#pycache 
+**/__pycache__/
