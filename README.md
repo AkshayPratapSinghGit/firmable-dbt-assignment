@@ -14,6 +14,16 @@
 ![Docker](https://img.shields.io/badge/Docker-Containerized-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
+## Assignment Completion
+
+| Status | Section | Points |
+|:------:|---------|------:|
+| ✅ | DBT: Staging + Intermediate + Mart models | 20 |
+| ✅ | DBT: Data quality tests (built-in + custom) | 15 |
+| ✅ | Airflow DAG: Correctness + robustness | 25 |
+| ✅ | SQL: Query correctness + performance thinking | 20 |
+| ✅ | Documentation + README quality | 10 |
+| ✅ | Spark bonus | 10 |
 
 # 📑 Table of Contents
 
